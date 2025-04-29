@@ -3,6 +3,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {GetWorkflowsForUser} from "@/actions/workflows/getWorkflowsForUser";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {AlertCircle, InboxIcon} from "lucide-react";
+import CreateWorkflowDialog from "@/app/(dashboard)/workflows/_components/CreateWorkflowDialog";
 
 // ----------------------------------------------------------------------
 
@@ -16,6 +17,7 @@ const Workflows = () => {
                     </h1>
                     <p className="text-muted-foreground">Manage your workflows</p>
                 </div>
+                <CreateWorkflowDialog />
             </div>
 
             <div className="h-full py-6">
@@ -26,6 +28,9 @@ const Workflows = () => {
         </div>
     );
 };
+
+
+// ----------------------------------------------------------------------
 
 const UserWorkflowsSkeleton = () => {
     return (
@@ -38,6 +43,7 @@ const UserWorkflowsSkeleton = () => {
         </div>
     )
 }
+
 
 const UserWorkflows = async () => {
     const workflows = await GetWorkflowsForUser();
@@ -53,11 +59,11 @@ const UserWorkflows = async () => {
         );
     }
 
-    if(workflows.length === 0) {
+    if (workflows.length === 0) {
         return (
             <div className="flex flex-col gap-4 h-full items-center justify-center">
                 <div className="rounded-full bg-accent w-20 h-20 flex items-center justify-center">
-                    <InboxIcon size={40} className="stroke-primary" />
+                    <InboxIcon size={40} className="stroke-primary"/>
                 </div>
                 <div className="flex flex-col gap-1 text-center">
                     <p className="font-bold">No workflow created yet</p>
@@ -65,6 +71,7 @@ const UserWorkflows = async () => {
                         Click on the button below to create your first workflow.
                     </p>
                 </div>
+                <CreateWorkflowDialog triggerText={"Create your first workflow"}/>
             </div>
         );
     }
