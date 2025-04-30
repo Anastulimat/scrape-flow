@@ -4,10 +4,18 @@ import TooltipWrapper from "@/components/TooltipWrapper";
 import {Button} from "@/components/ui/button";
 import {ChevronLeftIcon} from "lucide-react";
 import {useRouter} from "next/navigation";
+import SaveBtn from "@/app/workflow/_components/topbar/SaveBtn";
 
 // ----------------------------------------------------------------------
 
-const Topbar = () => {
+interface Props {
+    title: string;
+    subtitle?: string;
+}
+
+// ----------------------------------------------------------------------
+
+const Topbar = ({title, subtitle} : Props) => {
     const router = useRouter();
 
     return (
@@ -25,6 +33,19 @@ const Topbar = () => {
                         <ChevronLeftIcon size={20}/>
                     </Button>
                 </TooltipWrapper>
+                <div>
+                    <p className="font-bold text-ellipsis truncate">
+                        {title}
+                    </p>
+                    {subtitle && (
+                        <p className="text-sm text-muted-foreground">
+                            {subtitle}
+                        </p>
+                    )}
+                </div>
+            </div>
+            <div className="flex gap-1 flex-1 justify-end">
+                <SaveBtn />
             </div>
         </header>
     );
