@@ -16,7 +16,7 @@ export function AppProviders({children}: { children: ReactNode }) {
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
                 {children}
             </ThemeProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/*<ReactQueryDevtools initialIsOpen={false} />*/}
         </QueryClientProvider>
     );
 }

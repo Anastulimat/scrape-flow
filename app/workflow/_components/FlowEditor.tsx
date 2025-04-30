@@ -5,7 +5,7 @@ import {
     BackgroundVariant,
     Connection,
     Controls,
-    Edge,
+    Edge, getOutgoers,
     ReactFlow,
     useEdgesState,
     useNodesState,
@@ -123,7 +123,7 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
         const output = sourceTask.outputs.find((output) => output.name === connection.sourceHandle);
         const input = tagetTask.inputs.find((input) => input.name === connection.targetHandle);
 
-        if(input?.type !== output?.type) {
+        if (input?.type !== output?.type) {
             toast.error("Invalid connection: input and output types are not the same", {
                 id: "invalid-connection",
             });
@@ -131,8 +131,22 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
             return false;
         }
 
-        return true;
-    }, [nodes]);
+        const hasCycle = (node: AppNode, visited = new Set()) => {
+            if(visited.has(node.id)) return false;
+            visited.add(node.id);
+
+            for(const outgoer of getOutgoers(node, nodes, edges)) {
+                if(outgoer.id === connection.source) return true;
+                if(hasCycle(outgoer, visited)) return true;
+            }
+        };
+
+        const detectedCycle = hasCycle(targetNode);
+
+        return !detectedCycle;
+
+
+    }, [edges, nodes]);
 
     return (
         <main className="h-full w-full">
