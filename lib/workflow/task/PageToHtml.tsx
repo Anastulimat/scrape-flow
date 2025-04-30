@@ -17,7 +17,7 @@ export const PageToHtmlTask = {
     ],
     outputs: [
         {
-            name: "HTML",
+            name: "Html",
             type: TaskParamType.STRING,
         },
         {
