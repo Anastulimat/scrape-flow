@@ -3,7 +3,7 @@
 import {auth} from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import {WorkflowStatus} from "@/types/workflow";
-import {waitFor} from "@/lib/helper/waitFor";
+import {revalidatePath} from "next/cache";
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +13,6 @@ export async function UpdateWorkflow({id, definition}: { id: string, definition:
         throw new Error("Not authenticated");
     }
 
-    await waitFor(5000);
     const workflow = await prisma.workflow.findUnique({
         where: {
             id,
@@ -38,4 +37,6 @@ export async function UpdateWorkflow({id, definition}: { id: string, definition:
             definition
         }
     });
+
+    revalidatePath("/workflows");
 }
