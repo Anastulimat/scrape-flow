@@ -12,6 +12,7 @@ import CustomDialogHeader from "@/components/CustomDialogHeader";
 import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
+import {Textarea} from "@/components/ui/textarea";
 
 
 // ----------------------------------------------------------------------
@@ -40,6 +41,7 @@ const CreateWorkflowDialog = ({triggerText}: { triggerText?: string }) => {
                 <div className="p-6">
                     <Form {...form}>
                         <form className="space-y-8 w-full">
+
                             <FormField
                                 control={form.control}
                                 name="name"
@@ -59,6 +61,31 @@ const CreateWorkflowDialog = ({triggerText}: { triggerText?: string }) => {
                                     </FormItem>
                                 )}
                             />
+
+                            <FormField
+                                control={form.control}
+                                name="description"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel className="flex gap-1 items-center">
+                                            Description
+                                            <p className="text-sm text-muted-foreground">(optional)</p>
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Textarea className="resize-none" {...field} />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Provide a brief description of what your workflow does. <br/>
+                                            This is optional but can help you remember the workflow&apos;s purpose
+                                        </FormDescription>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <Button type="submit" className="w-full">
+                                Proceed
+                            </Button>
                         </form>
                     </Form>
                 </div>
