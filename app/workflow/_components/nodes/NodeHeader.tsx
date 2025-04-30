@@ -7,13 +7,15 @@ import {Badge} from "@/components/ui/badge";
 import {CoinsIcon, CopyIcon, GripVerticalIcon, TrashIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useReactFlow} from "@xyflow/react";
+import {AppNode} from '@/types/appNode';
+import {CreateFlowNode} from "@/lib/workflow/createFlowNode";
 
 // ----------------------------------------------------------------------
 
 
 const NodeHeader = ({taskType, nodeId}: { taskType: TaskType, nodeId: string }) => {
     const task = TaskRegistry[taskType];
-    const {deleteElements} = useReactFlow();
+    const {deleteElements, getNode, addNodes} = useReactFlow();
 
     return (
         <div className="flex items-center gap-2 p-2">
@@ -45,6 +47,19 @@ const NodeHeader = ({taskType, nodeId}: { taskType: TaskType, nodeId: string }) 
                                 variant="ghost"
                                 size="icon"
                                 className="cursor-pointer"
+                                onClick={() => {
+                                    const node = getNode(nodeId) as AppNode;
+                                    const newX = node.position.x;
+                                    const newY = node.position.y + node.measured?.height! + 20;
+                                    const newNode = CreateFlowNode(
+                                        node.data.type,
+                                        {
+                                            x: newX,
+                                            y: newY,
+                                        }
+                                    );
+                                    addNodes([newNode]);
+                                }}
                             >
                                 <CopyIcon size={12}/>
                             </Button>
