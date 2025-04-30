@@ -11,11 +11,12 @@ import SaveBtn from "@/app/workflow/_components/topbar/SaveBtn";
 interface Props {
     title: string;
     subtitle?: string;
+    workflowId: string;
 }
 
 // ----------------------------------------------------------------------
 
-const Topbar = ({title, subtitle} : Props) => {
+const Topbar = ({title, subtitle, workflowId} : Props) => {
     const router = useRouter();
 
     return (
@@ -45,7 +46,7 @@ const Topbar = ({title, subtitle} : Props) => {
                 </div>
             </div>
             <div className="flex gap-1 flex-1 justify-end">
-                <SaveBtn />
+                <SaveBtn workflowId={workflowId}/>
             </div>
         </header>
     );
