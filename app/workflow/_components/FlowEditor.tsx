@@ -19,6 +19,8 @@ import {CreateFlowNode} from "@/lib/workflow/createFlowNode";
 import {TaskType} from "@/types/task";
 import {AppNode} from "@/types/appNode";
 import DeletableEdge from "@/app/workflow/_components/edges/DeletableEdge";
+import {TaskRegistry} from "@/lib/workflow/task/Registry";
+import {toast} from "sonner";
 
 // ----------------------------------------------------------------------
 
@@ -100,6 +102,37 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
         });
     }, [nodes, setEdges, updateNodeData]);
 
+    const isValidConnection = useCallback((connection: Edge | Connection) => {
+        // No self-connections allowed
+        if (connection.source === connection.target) return false;
+
+        // Same taskParam type connection
+        const sourceNode = nodes.find(node => node.id === connection.source);
+        const targetNode = nodes.find(node => node.id === connection.target);
+        if (!sourceNode || !targetNode) {
+            toast.error("Invalid connection: source or target node not found", {
+                id: "invalid-connection",
+            });
+            console.error("Invalid connection: source or target node not found");
+            return false;
+        }
+
+        const sourceTask = TaskRegistry[sourceNode.data.type];
+        const tagetTask = TaskRegistry[targetNode.data.type];
+
+        const output = sourceTask.outputs.find((output) => output.name === connection.sourceHandle);
+        const input = tagetTask.inputs.find((input) => input.name === connection.targetHandle);
+
+        if(input?.type !== output?.type) {
+            toast.error("Invalid connection: input and output types are not the same", {
+                id: "invalid-connection",
+            });
+            console.error("Invalid connection: input and output types are not the same");
+            return false;
+        }
+
+        return true;
+    }, [nodes]);
 
     return (
         <main className="h-full w-full">
@@ -117,6 +150,7 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
                 onDragOver={onDragOver}
                 onDrop={onDrop}
                 onConnect={onConnect}
+                isValidConnection={isValidConnection}
             >
                 <Controls position="top-left" fitViewOptions={fitViewOptions}/>
                 <Background variant={BackgroundVariant.Dots} gap={12} size={1}/>

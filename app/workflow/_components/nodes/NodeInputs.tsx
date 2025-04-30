@@ -30,6 +30,7 @@ export function NodeInput({input, nodeId}: { input: TaskParam, nodeId: string })
             {!input.hideHandle && (
                 <Handle
                     id={input.name}
+                    isConnectable={!isConnected}
                     type="target"
                     position={Position.Left}
                     className={cn(
