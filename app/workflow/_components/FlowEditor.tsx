@@ -17,6 +17,7 @@ import React, {useCallback, useEffect} from "react";
 import {CreateFlowNode} from "@/lib/workflow/createFlowNode";
 import {TaskType} from "@/types/task";
 import {AppNode} from "@/types/appNode";
+import DeletableEdge from "@/app/workflow/_components/edges/DeletableEdge";
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,11 @@ const nodeTypes = {
     FlowScrapeNode: NodeComponent,
 };
 
-const snapGrid: [number, number] = [50, 50];
+const edgeTypes = {
+    default: DeletableEdge,
+}
+
+const snapGrid: [number, number] = [10, 10];
 const fitViewOptions = {
     padding: 1
 };
@@ -77,7 +82,7 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
     }, [setNodes, screenToFlowPosition]);
 
     const onConnect = useCallback((connection: Connection) => {
-        setEdges((edges) => addEdge({...connection, animated: false}, edges));
+        setEdges((edges) => addEdge({...connection, animated: true}, edges));
     }, [setEdges]);
 
     return (
@@ -88,6 +93,7 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 snapToGrid
                 snapGrid={snapGrid}
                 fitView
