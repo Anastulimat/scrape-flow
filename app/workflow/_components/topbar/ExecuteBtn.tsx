@@ -1,7 +1,7 @@
 "use client";
 
 import {Button} from "@/components/ui/button";
-import {SaveIcon} from "lucide-react";
+import {PlayIcon} from "lucide-react";
 import {useReactFlow} from "@xyflow/react";
 import {useMutation} from "@tanstack/react-query";
 import {UpdateWorkflow} from "@/actions/workflows/updateWorkflow";
@@ -9,7 +9,7 @@ import {toast} from "sonner";
 
 // ----------------------------------------------------------------------
 
-const SaveBtn = ({workflowId}: { workflowId: string }) => {
+const ExecuteBtn = ({workflowId}: { workflowId: string }) => {
 
     const {toObject} = useReactFlow();
 
@@ -37,10 +37,10 @@ const SaveBtn = ({workflowId}: { workflowId: string }) => {
                 });
             }}
         >
-            <SaveIcon size={16} className="stroke-green-400"/>
-            {saveMutation.isPending ? "Saving..." : "Save"}
+            <PlayIcon size={16} className="stroke-orange-400"/>
+            {saveMutation.isPending ? "Executing..." : "Execute"}
         </Button>
     );
 };
 
-export default SaveBtn;
+export default ExecuteBtn;

@@ -1,6 +1,7 @@
 import React from "react";
 import {LucideProps} from "lucide-react";
 import {TaskParam, TaskType} from "@/types/task";
+import {AppNode} from "@/types/appNode";
 
 // ----------------------------------------------------------------------
 
@@ -17,4 +18,9 @@ export type WorkflowTask = {
     inputs: TaskParam[];
     outputs: TaskParam[];
     credits: number
+}
+
+export type WorkflowExecutionPlan = {
+    phase: number;
+    nodes: AppNode[];
 }
