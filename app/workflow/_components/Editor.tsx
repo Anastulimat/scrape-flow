@@ -2,7 +2,7 @@
 
 import {Workflow} from "@prisma/client";
 import {ReactFlowProvider} from "@xyflow/react";
-import FlowEditor from "@/app/workflow/editor/_components/FlowEditor";
+import FlowEditor from "@/app/workflow/_components/FlowEditor";
 
 // ----------------------------------------------------------------------
 
