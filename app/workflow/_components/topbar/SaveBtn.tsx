@@ -25,6 +25,7 @@ const SaveBtn = ({workflowId}: { workflowId: string }) => {
 
     return (
         <Button
+            disabled={saveMutation.isPending}
             variant="outline"
             className="flex items-center gap-2"
             onClick={() => {
@@ -37,7 +38,7 @@ const SaveBtn = ({workflowId}: { workflowId: string }) => {
             }}
         >
             <CheckIcon size={16} className="stroke-green-400"/>
-            Save
+            {saveMutation.isPending ? "Saving..." : "Save"}
         </Button>
     );
 };
