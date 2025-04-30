@@ -8,6 +8,7 @@ export const LaunchBrowserTask = {
     label: "Launch Browser",
     icon: (props: LucideProps) => <GlobeIcon className="stroke-pink-400" {...props}/>,
     isEntryPoint: true,
+    credits: 5,
     inputs: [
         {
             name: "Website URL",
