@@ -5,7 +5,8 @@ import {
     BackgroundVariant,
     Connection,
     Controls,
-    Edge, getOutgoers,
+    Edge,
+    getOutgoers, MarkerType,
     ReactFlow,
     useEdgesState,
     useNodesState,
@@ -85,7 +86,16 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
     }, [setNodes, screenToFlowPosition]);
 
     const onConnect = useCallback((connection: Connection) => {
-        setEdges((edges) => addEdge({...connection, animated: true}, edges));
+        setEdges((edges) => addEdge(
+            {
+                ...connection,
+                animated: true,
+                markerEnd: {
+                    type: MarkerType.ArrowClosed,
+                },
+            },
+            edges)
+        );
 
         if (!connection.targetHandle) return;
 
@@ -132,12 +142,12 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
         }
 
         const hasCycle = (node: AppNode, visited = new Set()) => {
-            if(visited.has(node.id)) return false;
+            if (visited.has(node.id)) return false;
             visited.add(node.id);
 
-            for(const outgoer of getOutgoers(node, nodes, edges)) {
-                if(outgoer.id === connection.source) return true;
-                if(hasCycle(outgoer, visited)) return true;
+            for (const outgoer of getOutgoers(node, nodes, edges)) {
+                if (outgoer.id === connection.source) return true;
+                if (hasCycle(outgoer, visited)) return true;
             }
         };
 
@@ -165,6 +175,7 @@ const FlowEditor = ({workflow}: { workflow: Workflow }) => {
                 onDrop={onDrop}
                 onConnect={onConnect}
                 isValidConnection={isValidConnection}
+
             >
                 <Controls position="top-left" fitViewOptions={fitViewOptions}/>
                 <Background variant={BackgroundVariant.Dots} gap={12} size={1}/>
