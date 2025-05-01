@@ -4,6 +4,7 @@ import {cn} from "@/lib/utils";
 import {TaskParam} from "@/types/task";
 import NodeParamField from "@/app/workflow/_components/nodes/NodeParamField";
 import {ColorForHandle} from "@/app/workflow/_components/nodes/common";
+import useFlowValidation from "@/components/hooks/useFlowValidation";
 
 // ----------------------------------------------------------------------
 
@@ -19,9 +20,17 @@ export function NodeInput({input, nodeId}: { input: TaskParam, nodeId: string })
 
     const edges = useEdges();
     const isConnected = edges.some(edge => edge.target === nodeId && edge.targetHandle === input.name);
+    const {invalidInputs} = useFlowValidation();
+    const hasErrors = invalidInputs
+        .find(node => node.nodeId === nodeId)
+        ?.inputs.find((invalidInput) => invalidInput === input.name);
+
 
     return (
-        <div className="flex justify-start relative p-3 bg-secondary w-full">
+        <div className={cn(
+            "flex justify-start relative p-3 bg-secondary w-full",
+            hasErrors && "bg-destructive/30"
+        )}>
             <NodeParamField
                 param={input}
                 nodeId={nodeId}
