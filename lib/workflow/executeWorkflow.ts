@@ -12,6 +12,7 @@ import {Browser, Page} from "puppeteer";
 import {Edge} from "@xyflow/react";
 import {LogCollector} from "@/types/log";
 import {createLogCollector} from "@/lib/log";
+import {waitFor} from "@/lib/helper/waitFor";
 
 // ----------------------------------------------------------------------
 
@@ -194,6 +195,7 @@ async function executePhase(phase: ExecutionPhase, node: AppNode, environment: E
         // No executor found for the task type
         return false;
     }
+    // TODO: Remove waitFor
     const executionEnvironment: ExecutionEnvironment<any> = createExecutionEnvironment(node, environment, logCollector);
     return await runFn(executionEnvironment);
 }

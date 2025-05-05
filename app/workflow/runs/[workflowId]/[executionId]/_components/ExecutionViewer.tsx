@@ -3,7 +3,7 @@
 import {ReactNode, useState} from 'react';
 import {GetWorkflowWithPhases} from "@/actions/workflows/getWorkflowWithPhases";
 import {useQuery} from "@tanstack/react-query";
-import {WorkflowExecutionStatus} from "@/types/workflow";
+import {ExecutionPhaseStatus, WorkflowExecutionStatus} from "@/types/workflow";
 import {
     CalendarIcon,
     CircleDashedIcon,
@@ -26,6 +26,7 @@ import {ExecutionLog} from "@prisma/client";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {cn} from "@/lib/utils";
 import {LogLevel} from "@/types/log";
+import PhaseStatusBadge from "@/app/workflow/runs/[workflowId]/[executionId]/_components/PhaseStatusBadge";
 
 // ----------------------------------------------------------------------
 
@@ -128,9 +129,7 @@ const ExecutionViewer = ({initialData}: { initialData: ExecutionData }) => {
                                     {phase.name}
                                 </p>
                             </div>
-                            <p className="text-xs text-muted-foreground">
-                                {phase.status}
-                            </p>
+                            <PhaseStatusBadge status={phase.status as ExecutionPhaseStatus}/>
                         </Button>
                     ))}
                 </div>
