@@ -7,6 +7,8 @@ import {AppNode} from "@/types/appNode";
 import {TaskRegistry} from "@/lib/workflow/task/Registry";
 import {ExecutorRegistry} from "@/lib/workflow/executor/registry";
 import {Environment, ExecutionEnvironment} from "@/types/executor";
+import {TaskParamType} from "@/types/task";
+import {Browser, Page} from "puppeteer";
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +52,8 @@ export async function ExecuteWorkflow(executionId: string) {
     // finalize execution
     await finalizeWorkflowExecution(executionId, execution.workflowId, executionFailed, creditsConsumed);
 
-    // TODO: clean up env
+    // clean up env
+    await cleanUpEnvironment(environment);
 
     revalidatePath("/workflow/runs");
 }
@@ -133,7 +136,8 @@ async function executeWorkflowPhase(phase: ExecutionPhase, environment: Environm
         },
         data: {
             status: ExecutionPhaseStatus.RUNNING,
-            startedAt
+            startedAt,
+            inputs: JSON.stringify(environment.phases[node.id].inputs),
         }
     });
 
@@ -148,11 +152,12 @@ async function executeWorkflowPhase(phase: ExecutionPhase, environment: Environm
     // await waitFor(2000);
     // const success = Math.random() < 0.7;
 
-    await finalizePhase(phase.id, success);
+    const outputs = environment.phases[node.id].outputs;
+    await finalizePhase(phase.id, success, outputs);
     return {success};
 }
 
-async function finalizePhase(phaseId: string, success: boolean) {
+async function finalizePhase(phaseId: string, success: boolean, outputs: any) {
     const finalStatus = success ? ExecutionPhaseStatus.COMPLETED : ExecutionPhaseStatus.FAILED;
 
     await prisma.executionPhase.update({
@@ -161,7 +166,8 @@ async function finalizePhase(phaseId: string, success: boolean) {
         },
         data: {
             status: finalStatus,
-            completeAt: new Date()
+            completeAt: new Date(),
+            outputs: JSON.stringify(outputs),
         }
     })
 }
@@ -179,7 +185,11 @@ async function executePhase(phase: ExecutionPhase, node: AppNode, environment: E
 function setUpEnvironmentForPhase(node: AppNode, environment: Environment) {
     environment.phases[node.id] = {inputs: {}, outputs: {}};
     const inputs = TaskRegistry[node.data.type].inputs;
+
     for (const input of inputs) {
+        if (input.type === TaskParamType.BROWSER_INSTANCE) {
+            continue;
+        }
         const inputValue = node.data.inputs[input.name];
         if (inputValue) {
             environment.phases[node.id].inputs[input.name] = inputValue;
@@ -191,8 +201,23 @@ function setUpEnvironmentForPhase(node: AppNode, environment: Environment) {
     }
 }
 
-function createExecutionEnvironment(node: AppNode, environment: Environment) {
+function createExecutionEnvironment(node: AppNode, environment: Environment): ExecutionEnvironment<any> {
     return {
         getInput: (name: string) => environment.phases[node.id]?.inputs[name],
+        setOutput: (name: string, value: string) => {
+            environment.phases[node.id].outputs[name] = value;
+        },
+        getBrowser: () => environment.browser,
+        setBrowser: (browser: Browser) => environment.browser = browser,
+        getPage: () => environment.page,
+        setPage: (page: Page) => environment.page = page,
+    }
+}
+
+async function cleanUpEnvironment(environment: Environment) {
+    if (environment.browser) {
+        await environment.browser
+            .close()
+            .catch(err => console.error("Cannot close browser, reason:", err));
     }
 }
