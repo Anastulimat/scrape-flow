@@ -11,10 +11,12 @@ export async function LaunchBrowserExecutor(environment: ExecutionEnvironment<ty
             args: ["--no-sandbox"]
         });
         environment.setBrowser(browser);
+        environment.log.info("Browser started successfully");
 
         const page = await browser.newPage();
         await page.goto(websiteUrl);
         environment.setPage(page);
+        environment.log.info(`Navigated to ${websiteUrl}`);
 
         return true;
     } catch (error: any) {
