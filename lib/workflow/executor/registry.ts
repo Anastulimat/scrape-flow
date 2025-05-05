@@ -1,5 +1,6 @@
 import {LaunchBrowserExecutor} from "@/lib/workflow/executor/LaunchBrowserExecutor";
 import {PageToHtmlExecutor} from "@/lib/workflow/executor/PageToHtmlExecutor";
+import {ExtractTextFromElementExecutor} from "@/lib/workflow/executor/ExtractTextFromElementExecutor";
 import {TaskType} from "@/types/task";
 import {ExecutionEnvironment} from "@/types/executor";
 import {WorkflowTask} from "@/types/workflow";
@@ -15,5 +16,5 @@ type RegistryType = {
 export const ExecutorRegistry: RegistryType = {
     LAUNCH_BROWSER: LaunchBrowserExecutor,
     PAGE_TO_HTML: PageToHtmlExecutor,
-    EXTRACT_TEXT_FROM_ELEMENT: () => Promise.resolve(true),
+    EXTRACT_TEXT_FROM_ELEMENT: ExtractTextFromElementExecutor,
 };
