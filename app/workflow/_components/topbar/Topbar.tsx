@@ -7,6 +7,7 @@ import {useRouter} from "next/navigation";
 import SaveBtn from "@/app/workflow/_components/topbar/SaveBtn";
 import ExecuteBtn from "@/app/workflow/_components/topbar/ExecuteBtn";
 import NavigationTabs from "@/app/workflow/_components/topbar/NavigationTabs";
+import PublishBtn from "@/app/workflow/_components/topbar/PublishBtn";
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +57,7 @@ const Topbar = ({title, subtitle, workflowId, hideButtons = false}: Props) => {
                     <>
                         <ExecuteBtn workflowId={workflowId}/>
                         <SaveBtn workflowId={workflowId}/>
+                        <PublishBtn workflowId={workflowId}/>
                     </>
                 )}
             </div>
