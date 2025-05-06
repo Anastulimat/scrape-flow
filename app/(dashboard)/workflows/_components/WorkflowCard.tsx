@@ -3,7 +3,16 @@
 import {Workflow} from "@prisma/client";
 import {Card, CardContent} from "@/components/ui/card";
 import {WorkflowStatus} from "@/types/workflow";
-import {FileTextIcon, MoreVerticalIcon, PlayIcon, ShuffleIcon, TrashIcon} from "lucide-react";
+import {
+    CoinsIcon,
+    CornerDownRightIcon,
+    FileTextIcon,
+    MoreVerticalIcon,
+    MoveRightIcon,
+    PlayIcon,
+    ShuffleIcon,
+    TrashIcon
+} from "lucide-react";
 import {cn} from '@/lib/utils';
 import Link from "next/link";
 import {Button, buttonVariants} from "@/components/ui/button";
@@ -19,6 +28,8 @@ import TooltipWrapper from "@/components/TooltipWrapper";
 import {useState} from "react";
 import DeleteWorkflowDialog from "@/app/(dashboard)/workflows/_components/DeleteWorkflowDialog";
 import RunBtn from "@/app/(dashboard)/workflows/_components/RunBtn";
+import SchedulerDialog from "@/app/(dashboard)/workflows/_components/SchedulerDialog";
+import {Badge} from "@/components/ui/badge";
 
 
 const statusColors = {
@@ -60,6 +71,12 @@ const WorkflowCard = ({workflow}: { workflow: Workflow }) => {
                             </span>
                             )}
                         </h3>
+                        <SchedulerSection
+                            isDraft={isDraft}
+                            creditsCost={workflow.creditsCost}
+                            workflowId={workflow.id}
+                            cron={workflow.cron}
+                        />
                     </div>
                 </div>
 
@@ -126,3 +143,34 @@ function WorkflowActions({workflowName, workflowId}: { workflowName: string, wor
 }
 
 export default WorkflowCard;
+
+// ----------------------------------------------------------------------
+
+
+function SchedulerSection({isDraft, creditsCost, workflowId, cron}: {
+    isDraft: boolean,
+    creditsCost: number,
+    workflowId: string,
+    cron: string | null,
+}) {
+    if (isDraft) return null;
+
+    return (
+        <div className="flex items-center gap-2">
+            <CornerDownRightIcon className="h-4 w-4 text-muted-foreground"/>
+            <SchedulerDialog workflowId={workflowId} cron={cron}/>
+            <MoveRightIcon className="h-4 w-4 text-muted-foreground"/>
+            <TooltipWrapper content={"Credit consumption for full run"}>
+                <div className="flex items-center gap-3">
+                    <Badge
+                        variant="outline"
+                        className="space-x-2 text-muted-foreground rounded-sm"
+                    >
+                        <CoinsIcon className="h-4 w-4"/>
+                        <span className="text-sm">{creditsCost}</span>
+                    </Badge>
+                </div>
+            </TooltipWrapper>
+        </div>
+    );
+}
