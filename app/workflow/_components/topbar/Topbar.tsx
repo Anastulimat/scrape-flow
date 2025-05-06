@@ -8,6 +8,7 @@ import SaveBtn from "@/app/workflow/_components/topbar/SaveBtn";
 import ExecuteBtn from "@/app/workflow/_components/topbar/ExecuteBtn";
 import NavigationTabs from "@/app/workflow/_components/topbar/NavigationTabs";
 import PublishBtn from "@/app/workflow/_components/topbar/PublishBtn";
+import UnpublishBtn from "@/app/workflow/_components/topbar/UnpublishBtn";
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +58,7 @@ const Topbar = ({title, subtitle, workflowId, hideButtons = false, isPublished =
                 {hideButtons === false && (
                     <>
                         <ExecuteBtn workflowId={workflowId}/>
+                        {isPublished && <UnpublishBtn workflowId={workflowId}/>}
                         {!isPublished && (
                             <>
                                 <SaveBtn workflowId={workflowId}/>
