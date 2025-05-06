@@ -7,6 +7,7 @@ import Link from 'next/link';
 import {Button, buttonVariants} from "@/components/ui/button";
 import {usePathname} from "next/navigation";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
+import UserAvailableCreditsBadge from "@/components/UserAvailableCreditsBadge";
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +46,9 @@ const DesktopSidebar = () => {
                 <Logo/>
             </div>
 
-            <div className="p-2">TODO CREDITS</div>
+            <div className="p-2">
+                <UserAvailableCreditsBadge/>
+            </div>
 
             <div className="flex flex-col p-2 gap-1">
                 {routes.map(route => (
