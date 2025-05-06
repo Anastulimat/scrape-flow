@@ -18,6 +18,7 @@ import {
 import TooltipWrapper from "@/components/TooltipWrapper";
 import {useState} from "react";
 import DeleteWorkflowDialog from "@/app/(dashboard)/workflows/_components/DeleteWorkflowDialog";
+import RunBtn from "@/app/(dashboard)/workflows/_components/RunBtn";
 
 
 const statusColors = {
@@ -63,6 +64,7 @@ const WorkflowCard = ({workflow}: { workflow: Workflow }) => {
                 </div>
 
                 <div className="flex items-center space-x-2">
+                    {!isDraft && (<RunBtn workflowId={workflow.id}/>)}
                     <Link
                         href={`/workflow/editor/${workflow.id}`}
                         className={cn(
