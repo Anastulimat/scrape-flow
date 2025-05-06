@@ -1,6 +1,6 @@
 "use client";
 
-import {ReactNode, useState} from 'react';
+import {ReactNode, useEffect, useState} from 'react';
 import {GetWorkflowWithPhases} from "@/actions/workflows/getWorkflowWithPhases";
 import {useQuery} from "@tanstack/react-query";
 import {ExecutionPhaseStatus, WorkflowExecutionStatus} from "@/types/workflow";
@@ -49,6 +49,21 @@ const ExecutionViewer = ({initialData}: { initialData: ExecutionData }) => {
     })
 
     const isRunning = query.data?.status === WorkflowExecutionStatus.RUNNING;
+
+    useEffect(() => {
+        // While running, we auto-select the current running phase in the sidebar
+        const phases = query.data?.phases || [];
+        if (isRunning) {
+            // Select the last executed phase
+            const phaseToSelect = phases.toSorted((a, b) => a.startedAt! > b.startedAt! ? -1 : 1)[0];
+            setSelectedPhase(phaseToSelect.id);
+            return;
+        }
+
+        const phaseToSelect = phases.toSorted((a, b) => a.completeAt! > b.completeAt! ? -1 : 1)[0];
+        setSelectedPhase(phaseToSelect.id);
+
+    }, [isRunning, query.data?.phases, setSelectedPhase]);
 
     const duration = datesToDurationString(query.data?.completeAt, query.data?.startedAt);
 

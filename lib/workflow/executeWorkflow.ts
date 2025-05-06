@@ -195,7 +195,6 @@ async function executePhase(phase: ExecutionPhase, node: AppNode, environment: E
         // No executor found for the task type
         return false;
     }
-    // TODO: Remove waitFor
     const executionEnvironment: ExecutionEnvironment<any> = createExecutionEnvironment(node, environment, logCollector);
     return await runFn(executionEnvironment);
 }
