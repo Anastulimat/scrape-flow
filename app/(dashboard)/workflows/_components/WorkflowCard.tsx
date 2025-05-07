@@ -5,6 +5,7 @@ import {Card, CardContent} from "@/components/ui/card";
 import {WorkflowExecutionStatus, WorkflowStatus} from "@/types/workflow";
 import {
     ChevronRightIcon,
+    ClockIcon,
     CoinsIcon,
     CornerDownRightIcon,
     FileTextIcon,
@@ -32,7 +33,8 @@ import RunBtn from "@/app/(dashboard)/workflows/_components/RunBtn";
 import SchedulerDialog from "@/app/(dashboard)/workflows/_components/SchedulerDialog";
 import {Badge} from "@/components/ui/badge";
 import ExecutionStatusIndicator from "@/app/workflow/runs/[workflowId]/_components/ExecutionStatusIndicator";
-import {formatDistanceToNow} from "date-fns";
+import {format, formatDistanceToNow} from "date-fns";
+import {formatInTimeZone} from "date-fns-tz";
 
 
 const statusColors = {
@@ -180,8 +182,10 @@ function SchedulerSection({isDraft, creditsCost, workflowId, cron}: {
 }
 
 function LastRunDetails({workflow}: { workflow: Workflow }) {
-    const {lastRunAt, lastRunStatus, lastRunId} = workflow;
+    const {lastRunAt, lastRunStatus, lastRunId, nextRunAt} = workflow;
     const formattedStartedAt = lastRunAt && formatDistanceToNow(lastRunAt, {addSuffix: true});
+    const nextSchedule = nextRunAt && format(nextRunAt, "yyyy-MM-dd HH:mm");
+    const nextScheduleUTC = nextRunAt && formatInTimeZone(nextRunAt, "UTC", "HH:mm");
 
     return (
         <div className="bg-primary/5 px-4 py-1 flex justify-between items-center text-muted-foreground">
@@ -206,6 +210,14 @@ function LastRunDetails({workflow}: { workflow: Workflow }) {
 
                 {!lastRunAt && (<p>No runs yet</p>)}
             </div>
+            {nextRunAt && (
+                <div className="flex items-center gap-2 text-sm">
+                    <ClockIcon size={14}/>
+                    <span>Next run at:</span>
+                    <span>{nextSchedule}</span>
+                    <span className="text-xs">({nextScheduleUTC} UTC)</span>
+                </div>
+            )}
         </div>
     );
 }
