@@ -8,6 +8,7 @@ import {
 } from "@/types/workflow";
 import {TaskRegistry} from "@/lib/workflow/task/Registry";
 import {ExecuteWorkflow} from "@/lib/workflow/executeWorkflow";
+import parser from "cron-parser";
 
 // ----------------------------------------------------------------------
 
@@ -61,36 +62,45 @@ export async function GET(request: Request) {
         return Response.json({error: "Bad request"}, {status: 400});
     }
 
-    const execution = await prisma.workflowExecution.create({
-        data: {
-            workflowId,
-            userId: workflow.userId,
-            definition: workflow.definition,
-            status: WorkflowExecutionStatus.PENDING,
-            startedAt: new Date(),
-            trigger: WorkflowExecutionTrigger.CRON,
-            phases: {
-                create: executionPlan.flatMap(phase => {
-                    return phase.nodes.flatMap((node) => {
-                        return {
-                            userId: workflow.userId,
-                            status: ExecutionPhaseStatus.CREATED,
-                            number: phase.phase,
-                            node: JSON.stringify(node),
-                            name: TaskRegistry[node.data.type].label,
-                        }
-                    })
-                })
-            }
-        }
-    });
+    try {
+        const cron = parser.parseExpression(workflow.cron!, {utc: true});
+        const nextRun = cron.next().toDate();
 
-    if (!execution) {
-        throw new Error("Failed to create workflow execution");
+        const execution = await prisma.workflowExecution.create({
+            data: {
+                workflowId,
+                userId: workflow.userId,
+                definition: workflow.definition,
+                status: WorkflowExecutionStatus.PENDING,
+                startedAt: new Date(),
+                trigger: WorkflowExecutionTrigger.CRON,
+                phases: {
+                    create: executionPlan.flatMap(phase => {
+                        return phase.nodes.flatMap((node) => {
+                            return {
+                                userId: workflow.userId,
+                                status: ExecutionPhaseStatus.CREATED,
+                                number: phase.phase,
+                                node: JSON.stringify(node),
+                                name: TaskRegistry[node.data.type].label,
+                            }
+                        })
+                    })
+                }
+            }
+        });
+
+        if (!execution) {
+            throw new Error("Failed to create workflow execution");
+        }
+
+        // Run this on the background
+        await ExecuteWorkflow(execution.id, nextRun);
+
+        return new Response(null, {status: 200});
+    } catch (error) {
+        return Response.json({error: "Internal server error"}, {status: 500});
     }
 
-    // Run this on the background
-    await ExecuteWorkflow(execution.id);
 
-    return new Response(null, {status: 200});
 }
