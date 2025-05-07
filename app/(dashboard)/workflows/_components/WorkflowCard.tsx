@@ -158,7 +158,7 @@ function SchedulerSection({isDraft, creditsCost, workflowId, cron}: {
     return (
         <div className="flex items-center gap-2">
             <CornerDownRightIcon className="h-4 w-4 text-muted-foreground"/>
-            <SchedulerDialog workflowId={workflowId} cron={cron}/>
+            <SchedulerDialog workflowId={workflowId} cron={cron} key={`${cron}-${workflowId}`}/>
             <MoveRightIcon className="h-4 w-4 text-muted-foreground"/>
             <TooltipWrapper content={"Credit consumption for full run"}>
                 <div className="flex items-center gap-3">

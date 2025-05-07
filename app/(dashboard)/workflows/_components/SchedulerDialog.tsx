@@ -14,6 +14,8 @@ import {useEffect, useState} from "react";
 import {UpdateWorkflowCron} from "@/actions/workflows/updateWorkflowCron";
 import cronstrue from "cronstrue";
 import parser from "cron-parser";
+import {RemoveWorkflowSchedule} from "@/actions/workflows/removeWorkflowSchedule";
+import {Separator} from "@/components/ui/separator";
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +33,16 @@ const SchedulerDialog = (props: { workflowId: string, cron: string | null }) => 
         },
         onError: () => {
             toast.error("Failed to schedule workflow", {id: "cron"});
+        }
+    });
+
+    const removeScheduleMutation = useMutation({
+        mutationFn: RemoveWorkflowSchedule,
+        onSuccess: () => {
+            toast.success("Schedule removed successfully", {id: "cron"});
+        },
+        onError: () => {
+            toast.error("Failed to remove schedule", {id: "cron"});
         }
     })
 
@@ -99,6 +111,25 @@ const SchedulerDialog = (props: { workflowId: string, cron: string | null }) => 
                             ? `The workflow will be executed : ${readableCron}`
                             : "Not a valid cron expression"}
                     </div>
+
+                    {workflowHasValidCron && (
+                        <DialogClose asChild>
+                            <div>
+                                <Button
+                                    className="w-full text-destructive border-destructive hover:text-destructive"
+                                    variant="outline"
+                                    disabled={removeScheduleMutation.isPending || mutation.isPending}
+                                    onClick={() => {
+                                        toast.loading("Removing schedule...", {id: "cron"});
+                                        removeScheduleMutation.mutate(props.workflowId);
+                                    }}
+                                >
+                                    Remove current schedule
+                                </Button>
+                                <Separator className="my-4" />
+                            </div>
+                        </DialogClose>
+                    )}
                 </div>
                 <DialogFooter className="px-6 gap-2">
                     <DialogClose asChild>
