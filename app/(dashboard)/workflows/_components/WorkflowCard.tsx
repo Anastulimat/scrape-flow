@@ -2,8 +2,9 @@
 
 import {Workflow} from "@prisma/client";
 import {Card, CardContent} from "@/components/ui/card";
-import {WorkflowStatus} from "@/types/workflow";
+import {WorkflowExecutionStatus, WorkflowStatus} from "@/types/workflow";
 import {
+    ChevronRightIcon,
     CoinsIcon,
     CornerDownRightIcon,
     FileTextIcon,
@@ -30,6 +31,8 @@ import DeleteWorkflowDialog from "@/app/(dashboard)/workflows/_components/Delete
 import RunBtn from "@/app/(dashboard)/workflows/_components/RunBtn";
 import SchedulerDialog from "@/app/(dashboard)/workflows/_components/SchedulerDialog";
 import {Badge} from "@/components/ui/badge";
+import ExecutionStatusIndicator from "@/app/workflow/runs/[workflowId]/_components/ExecutionStatusIndicator";
+import {formatDistanceToNow} from "date-fns";
 
 
 const statusColors = {
@@ -98,6 +101,7 @@ const WorkflowCard = ({workflow}: { workflow: Workflow }) => {
                     <WorkflowActions workflowName={workflow.name} workflowId={workflow.id}/>
                 </div>
             </CardContent>
+            <LastRunDetails workflow={workflow}/>
         </Card>
     );
 };
@@ -171,6 +175,37 @@ function SchedulerSection({isDraft, creditsCost, workflowId, cron}: {
                     </Badge>
                 </div>
             </TooltipWrapper>
+        </div>
+    );
+}
+
+function LastRunDetails({workflow}: { workflow: Workflow }) {
+    const {lastRunAt, lastRunStatus, lastRunId} = workflow;
+    const formattedStartedAt = lastRunAt && formatDistanceToNow(lastRunAt, {addSuffix: true});
+
+    return (
+        <div className="bg-primary/5 px-4 py-1 flex justify-between items-center text-muted-foreground">
+            <div className="flex items-center gap-2 text-sm">
+                {lastRunAt && (
+                    <Link
+                        href={`/workflow/runs/${workflow.id}/${lastRunId}`}
+                        className="flex items-center text-sm gap-2 group"
+                    >
+                        <span>Last run:</span>
+                        <ExecutionStatusIndicator
+                            status={lastRunStatus as WorkflowExecutionStatus}
+                        />
+                        <span>{lastRunStatus}</span>
+                        <span>{formattedStartedAt}</span>
+                        <ChevronRightIcon
+                            size={14}
+                            className="-translate-x-[2px] group-hover:translate-x-0 transition"
+                        />
+                    </Link>
+                )}
+
+                {!lastRunAt && (<p>No runs yet</p>)}
+            </div>
         </div>
     );
 }

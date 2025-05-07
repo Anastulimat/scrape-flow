@@ -28,7 +28,7 @@ const RunBtn = ({workflowId}: { workflowId: string }) => {
             className="flex items-center gap-2"
             disabled={mutation.isPending}
             onClick={() => {
-                toast.loading("Scheduling rub...", {id: workflowId});
+                toast.loading("Starting workflow...", {id: workflowId});
                 mutation.mutate({
                     workflowId: workflowId,
                 });
