@@ -5,6 +5,8 @@ import {TaskType} from "@/types/task";
 import {TaskRegistry} from "@/lib/workflow/task/Registry";
 import {Button} from "@/components/ui/button";
 import React from "react";
+import {CoinsIcon} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 // ----------------------------------------------------------------------
 
@@ -25,7 +27,9 @@ const TaskMenu = () => {
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-1">
                         <TaskMenuBtn taskType={TaskType.FILL_INPUT}/>
+                        <TaskMenuBtn taskType={TaskType.NAVIGATE_TO_URL}/>
                         <TaskMenuBtn taskType={TaskType.CLICK_ELEMENT}/>
+                        <TaskMenuBtn taskType={TaskType.SCROLL_TO_ELEMENT}/>
                     </AccordionContent>
                 </AccordionItem>
 
@@ -95,6 +99,10 @@ function TaskMenuBtn({taskType}: { taskType: TaskType }) {
                 <task.icon size={20}/>
                 {task.label}
             </div>
+            <Badge className="gap-2 flex items-center" variant="outline">
+                <CoinsIcon size={16} />
+                {task.credits}
+            </Badge>
         </Button>
     );
 }

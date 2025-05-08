@@ -11,6 +11,8 @@ import {DeliverViaWebhookExecutor} from "@/lib/workflow/executor/DeliverViaWebho
 import {ExtractDataWithAiExecutor} from "@/lib/workflow/executor/ExtractDataWithAiExecutor";
 import {ReadPropertyFromJsonExecutor} from "@/lib/workflow/executor/ReadPropertyFromJsonExecutor";
 import {WritePropertyToJsonExecutor} from "@/lib/workflow/executor/WritePropertyToJsonExecutor";
+import {NavigateToUrlExecutor} from "@/lib/workflow/executor/NavigateToUrlExecutor";
+import {ScrollToElementExecutor} from "@/lib/workflow/executor/ScrollToElementExecutor";
 
 // ----------------------------------------------------------------------
 
@@ -31,4 +33,6 @@ export const ExecutorRegistry: RegistryType = {
     EXTRACT_DATA_WITH_AI: ExtractDataWithAiExecutor,
     READ_PROPERTY_FROM_JSON: ReadPropertyFromJsonExecutor,
     WRITE_PROPERTY_TO_JSON: WritePropertyToJsonExecutor,
+    NAVIGATE_TO_URL: NavigateToUrlExecutor,
+    SCROLL_TO_ELEMENT: ScrollToElementExecutor
 };
