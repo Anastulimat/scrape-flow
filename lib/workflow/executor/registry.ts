@@ -6,6 +6,7 @@ import {ExecutionEnvironment} from "@/types/executor";
 import {WorkflowTask} from "@/types/workflow";
 import {FillInputExecutor} from "@/lib/workflow/executor/FillInputExecutor";
 import {ClickElementExecutor} from "@/lib/workflow/executor/ClickElementExecutor";
+import {WaitForElementExecutor} from "@/lib/workflow/executor/WaitForElementExecutor";
 
 // ----------------------------------------------------------------------
 
@@ -21,4 +22,5 @@ export const ExecutorRegistry: RegistryType = {
     EXTRACT_TEXT_FROM_ELEMENT: ExtractTextFromElementExecutor,
     FILL_INPUT: FillInputExecutor,
     CLICK_ELEMENT: ClickElementExecutor,
+    WAIT_FOR_ELEMENT: WaitForElementExecutor,
 };
