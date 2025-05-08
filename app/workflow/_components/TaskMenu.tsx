@@ -16,7 +16,7 @@ const TaskMenu = () => {
             <Accordion
                 type="multiple"
                 className="w-full"
-                defaultValue={["extraction", "interactions", "timing", "results"]}
+                defaultValue={["extraction", "interactions", "timing-controls", "storage", "results"]}
             >
 
                 <AccordionItem value="interactions">
@@ -40,12 +40,21 @@ const TaskMenu = () => {
                     </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem value="timing">
+                <AccordionItem value="timing-controls">
                     <AccordionTrigger className="font-bold">
-                        Timing
+                        Timing controls
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-1">
                         <TaskMenuBtn taskType={TaskType.WAIT_FOR_ELEMENT}/>
+                    </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="storage">
+                    <AccordionTrigger className="font-bold">
+                        Data storage
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col gap-1">
+                        <TaskMenuBtn taskType={TaskType.READ_PROPERTY_FROM_JSON}/>
                     </AccordionContent>
                 </AccordionItem>
 

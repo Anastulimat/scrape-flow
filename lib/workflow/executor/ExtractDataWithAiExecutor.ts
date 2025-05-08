@@ -2,7 +2,7 @@ import {ExecutionEnvironment} from "@/types/executor";
 import {ExtractDataWithAITask} from "@/lib/workflow/task/ExtractDataWithAI";
 import prisma from "@/lib/prisma";
 import {symmetricDecrypt} from "@/lib/encyption";
-import OpenAI from "openai";
+//import OpenAI from "openai";
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ export async function ExtractDataWithAiExecutor(environment: ExecutionEnvironmen
             return false;
         }
 
-        const openai = new OpenAI({
+        /*const openai = new OpenAI({
             apiKey: plainCredentialValue,
         });
         const response = await openai.chat.completions.create({
@@ -73,18 +73,18 @@ export async function ExtractDataWithAiExecutor(environment: ExecutionEnvironmen
         if (!result) {
             environment.log.error("Empty response from AI");
             return false;
-        }
+        }*/
 
-        /*
+
         const mockExtractedData = {
             usernameSelector: "#username",
             passwordSelector: "#password",
             loginButtonSelector: "body > div > form > input.btn.btn-primary",
         };
         environment.setOutput("Extracted data", JSON.stringify(mockExtractedData, null, 4));
-       */
 
-        environment.setOutput("Extracted data", result);
+
+        // environment.setOutput("Extracted data", result);
 
         return true;
     } catch (error: any) {
