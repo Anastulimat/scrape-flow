@@ -1,21 +1,16 @@
 import {ExecutionEnvironment} from "@/types/executor";
-import {FillInputTask} from "@/lib/workflow/task/FillInput";
+import {ClickElementTask} from "@/lib/workflow/task/ClickElement";
 
 // ----------------------------------------------------------------------
 
-export async function FillInputExecutor(environment: ExecutionEnvironment<typeof FillInputTask>): Promise<boolean> {
+export async function ClickElementExecutor(environment: ExecutionEnvironment<typeof ClickElementTask>): Promise<boolean> {
     try {
         const selector = environment.getInput("Selector");
         if (!selector) {
             environment.log.error("Input -> selector not defined");
         }
 
-        const value = environment.getInput("Value");
-        if (!value) {
-            environment.log.error("Input -> value not defined");
-        }
-
-        await environment.getPage()!.type(selector, value);
+        await environment.getPage()!.click(selector);
 
         return true;
     } catch (error: any) {

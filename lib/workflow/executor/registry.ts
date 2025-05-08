@@ -5,6 +5,7 @@ import {TaskType} from "@/types/task";
 import {ExecutionEnvironment} from "@/types/executor";
 import {WorkflowTask} from "@/types/workflow";
 import {FillInputExecutor} from "@/lib/workflow/executor/FillInputExecutor";
+import {ClickElementExecutor} from "@/lib/workflow/executor/ClickElementExecutor";
 
 // ----------------------------------------------------------------------
 
@@ -19,4 +20,5 @@ export const ExecutorRegistry: RegistryType = {
     PAGE_TO_HTML: PageToHtmlExecutor,
     EXTRACT_TEXT_FROM_ELEMENT: ExtractTextFromElementExecutor,
     FILL_INPUT: FillInputExecutor,
+    CLICK_ELEMENT: ClickElementExecutor,
 };
