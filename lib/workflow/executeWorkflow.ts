@@ -12,7 +12,6 @@ import {Browser, Page} from "puppeteer";
 import {Edge} from "@xyflow/react";
 import {LogCollector} from "@/types/log";
 import {createLogCollector} from "@/lib/log";
-import {waitFor} from "@/lib/helper/waitFor";
 
 // ----------------------------------------------------------------------
 
@@ -195,7 +194,6 @@ async function finalizePhase(phaseId: string, success: boolean, outputs: any, lo
 }
 
 async function executePhase(phase: ExecutionPhase, node: AppNode, environment: Environment, logCollector: LogCollector): Promise<boolean> {
-    await waitFor(1500);
     const runFn = ExecutorRegistry[node.data.type];
     if (!runFn) {
         logCollector.error(`No executor found for the type ${node.data.type}`);
