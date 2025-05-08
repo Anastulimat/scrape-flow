@@ -2,7 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import {auth} from "@clerk/nextjs/server";
-import {createWorkflowSchema, CreateWorkflowSchemaType} from "@/schema/workflow";
+import {createWorkflowSchema, createWorkflowSchemaType} from "@/schema/workflow";
 import {WorkflowStatus} from "@/types/workflow";
 import {redirect} from "next/navigation";
 import {AppNode} from "@/types/appNode";
@@ -12,7 +12,7 @@ import {TaskType} from "@/types/task";
 
 // ----------------------------------------------------------------------
 
-export async function CreateWorkflow(form: CreateWorkflowSchemaType) {
+export async function CreateWorkflow(form: createWorkflowSchemaType) {
     const {success, data} = createWorkflowSchema.safeParse(form);
     if (!success) {
         throw new Error("Invalid form data");
