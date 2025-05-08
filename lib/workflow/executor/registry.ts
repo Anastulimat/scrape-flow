@@ -7,6 +7,7 @@ import {WorkflowTask} from "@/types/workflow";
 import {FillInputExecutor} from "@/lib/workflow/executor/FillInputExecutor";
 import {ClickElementExecutor} from "@/lib/workflow/executor/ClickElementExecutor";
 import {WaitForElementExecutor} from "@/lib/workflow/executor/WaitForElementExecutor";
+import {DeliverViaWebhookExecutor} from "@/lib/workflow/executor/DeliverViaWebhookExecutor";
 
 // ----------------------------------------------------------------------
 
@@ -23,4 +24,5 @@ export const ExecutorRegistry: RegistryType = {
     FILL_INPUT: FillInputExecutor,
     CLICK_ELEMENT: ClickElementExecutor,
     WAIT_FOR_ELEMENT: WaitForElementExecutor,
+    DELIVER_VIA_WEBHOOK: DeliverViaWebhookExecutor,
 };
