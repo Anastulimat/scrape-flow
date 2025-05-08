@@ -2,7 +2,13 @@
 
 import React from 'react';
 import {usePathname} from "next/navigation";
-import {Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList} from "@/components/ui/breadcrumb";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbSeparator
+} from "@/components/ui/breadcrumb";
 import {MobileSidebar} from "@/components/Sidebar";
 
 // ----------------------------------------------------------------------
@@ -15,7 +21,7 @@ const BreadcrumbHeader = () => {
 
     return (
         <div className="flex items-center flex-start">
-            <MobileSidebar />
+            <MobileSidebar/>
             <Breadcrumb>
                 <BreadcrumbList>
                     {paths.map((path, index) => (
@@ -25,6 +31,7 @@ const BreadcrumbHeader = () => {
                                     {path === "" ? "home" : path}
                                 </BreadcrumbLink>
                             </BreadcrumbItem>
+                            {index !== paths.length -1 && <BreadcrumbSeparator/>}
                         </React.Fragment>
                     ))}
                 </BreadcrumbList>
