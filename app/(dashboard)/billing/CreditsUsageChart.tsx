@@ -1,8 +1,7 @@
 "use client";
 
-import {GetWorkflowExecutionsStats} from "@/actions/analytics/getWorlflowExecutionsStats";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Layers2Icon} from "lucide-react";
+import {ChartColumnStackedIcon} from "lucide-react";
 import {
     ChartContainer,
     ChartLegend,
@@ -10,36 +9,48 @@ import {
     ChartTooltip,
     ChartTooltipContent
 } from "@/components/ui/chart";
-import {CartesianGrid, Line, LineChart, XAxis} from "recharts";
+import {Bar, BarChart, CartesianGrid, XAxis} from "recharts";
+import {GetCreditsUsageInPeriod} from "@/actions/analytics/getCreditsUsageInPeriod";
 
 // ----------------------------------------------------------------------
 
-type ChartData = Awaited<ReturnType<typeof GetWorkflowExecutionsStats>>;
+type ChartData = Awaited<ReturnType<typeof GetCreditsUsageInPeriod>>;
 
 const chartConfig = {
     success: {
-        label: "Successful",
+        label: "Successful Phases Credits",
         color: "hsl(var(--chart-2))",
     },
     failed: {
-        label: "Failed",
+        label: "Failed Phases Credits",
         color: "hsl(var(--chart-1))",
     },
 }
 
 // ----------------------------------------------------------------------
 
-const ExecutionStatusChart = ({data}: { data: ChartData }) => {
+const CreditsUsageChart = (
+    {
+        data,
+        title,
+        description,
+    }
+    :
+    {
+        data: ChartData,
+        title: string,
+        description: string,
+    }) => {
     return (
         <Card>
             <CardHeader>
                 <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                    <Layers2Icon className="w-6 h-6 text-primary"/>
-                    Workflow executions status
+                    <ChartColumnStackedIcon className="w-6 h-6 text-primary"/>
+                    {title}
                 </CardTitle>
 
                 <CardDescription>
-                    Daily number of successful and failed workflow executions
+                    {description}
                 </CardDescription>
             </CardHeader>
 
@@ -48,7 +59,7 @@ const ExecutionStatusChart = ({data}: { data: ChartData }) => {
                     className="max-h-[200px] w-full"
                     config={chartConfig}
                 >
-                    <LineChart
+                    <BarChart
                         data={data}
                         height={250}
                         accessibilityLayer
@@ -81,29 +92,28 @@ const ExecutionStatusChart = ({data}: { data: ChartData }) => {
                             content={<ChartTooltipContent className="w-[250px]"/>}
                         />
 
-                        <Line
-                            min={0}
-                            type={"bump"}
+                        <Bar
+                            radius={[0, 0, 4, 4]}
                             fill="var(--color-success)"
-                            fillOpacity={0.6}
+                            fillOpacity={0.8}
                             stroke="var(--color-success)"
                             dataKey={"success"}
+                            stackId="a"
                         />
 
-                        <Line
-                            min={0}
-                            type={"bump"}
+                        <Bar
+                            radius={[4, 4, 0, 0]}
                             fill="var(--color-failed)"
-                            fillOpacity={0.6}
+                            fillOpacity={0.8}
                             stroke="var(--color-failed)"
                             dataKey={"failed"}
-
+                            stackId="a"
                         />
-                    </LineChart>
+                    </BarChart>
                 </ChartContainer>
             </CardContent>
         </Card>
     );
 };
 
-export default ExecutionStatusChart;
+export default CreditsUsageChart;
