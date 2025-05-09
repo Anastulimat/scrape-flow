@@ -4,6 +4,7 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import ReactCountUpWrapper from "@/components/ReactCountUpWrapper";
 import {CoinsIcon} from "lucide-react";
+import CreditsPurchase from "@/app/(dashboard)/billing/_components/CreditsPurchase";
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +15,7 @@ export default function BillingPage() {
             <Suspense fallback={<Skeleton className="h-[166px] w-full"/>}>
                 <BalanceCard/>
             </Suspense>
+            <CreditsPurchase />
         </div>
     );
 }
