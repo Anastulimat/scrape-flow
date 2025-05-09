@@ -57,8 +57,11 @@ export async function GetWorkflowExecutionsStats(selectedPeriod: Period) {
         if (execution.status === WorkflowExecutionStatus.FAILED) {
             stats[date].failed += 1;
         }
-    })
+    });
 
-    return stats;
+    return Object.entries(stats).map(([date, info]) => ({
+        date,
+        ...info
+    }));
 
 }

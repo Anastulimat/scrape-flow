@@ -44,8 +44,9 @@
         --input: 240 5.9% 90%;
         --ring: 142.1 76.2% 36.3%;
         --radius: 0.5rem;
-        --chart-1: 142 88% 28%;
-        --chart-2: 140 74% 44%;
+        --chart-1: 0 84.2% 60.2%;    /* rouge (error/destructive) */
+        --chart-2: 142.1 70.6% 45.3%; /* vert (success) */
+
     }
 
     .dark {
@@ -68,8 +69,8 @@
         --border: 240 3.7% 15.9%;
         --input: 240 3.7% 15.9%;
         --ring: 142.4 71.8% 29.2%;
-        --chart-1: 142 88% 28%;
-        --chart-2: 140 74% 44%;
+        --chart-1: 0 62.8% 53.1%;     /* rouge plus atténué pour dark */
+        --chart-2: 143 60% 36.1%;     /* vert plus sombre pour dark */
     }
 }
 
