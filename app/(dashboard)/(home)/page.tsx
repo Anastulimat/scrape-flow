@@ -9,7 +9,7 @@ import StatsCard from './_components/StatsCard';
 import {GetWorkflowExecutionsStats} from "@/actions/analytics/getWorlflowExecutionsStats";
 import ExecutionStatusChart from "@/app/(dashboard)/(home)/_components/ExecutionStatusChart";
 import {GetCreditsUsageInPeriod} from "@/actions/analytics/getCreditsUsageInPeriod";
-import CreditsUsageChart from "@/app/(dashboard)/billing/CreditsUsageChart";
+import CreditsUsageChart from "@/app/(dashboard)/billing/_components/CreditsUsageChart";
 
 // ----------------------------------------------------------------------
 
