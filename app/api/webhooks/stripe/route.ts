@@ -11,8 +11,6 @@ export async function POST(request: Request) {
     try {
         const event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!);
 
-        console.log("===> Event:", event.type);
-
         switch (event.type) {
             case "checkout.session.completed":
                 await handleCheckoutSessionCompleted(event.data.object);

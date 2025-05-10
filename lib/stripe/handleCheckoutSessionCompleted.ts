@@ -11,18 +11,18 @@ export async function handleCheckoutSessionCompleted(event: Stripe.Checkout.Sess
         throw new Error("Missing metadata");
     }
 
-    const {userId, packageId} = event.metadata;
+    const {userId, packId} = event.metadata;
     if (!userId) {
         throw new Error("Missing userId");
     }
 
-    if (!packageId) {
-        throw new Error("Missing packageId");
+    if (!packId) {
+        throw new Error("Missing packId");
     }
 
-    const purchasedPack = getCreditsPack(packageId as PackId);
+    const purchasedPack = getCreditsPack(packId as PackId);
     if (!purchasedPack) {
-        throw new Error("Invalid packageId");
+        throw new Error("Invalid packId");
     }
 
     await prisma.userBalance.upsert({

@@ -16,7 +16,6 @@ import CreditsUsageChart from "@/app/(dashboard)/billing/_components/CreditsUsag
 const HomePage = ({searchParams}: { searchParams: { month?: string, year?: string } }) => {
 
     const currentDate = new Date();
-    console.log("Current date: ", currentDate.getMonth(), currentDate.getFullYear());
     const {month, year} = searchParams;
     const period: Period = {
         month: month ? parseInt(month) : currentDate.getMonth(),
